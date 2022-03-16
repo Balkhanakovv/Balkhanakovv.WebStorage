@@ -17,8 +17,8 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// Название типа документа
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public List<Document> Documents { get; set; }
+        public List<Document>? Documents { get; set; }
     }
 }

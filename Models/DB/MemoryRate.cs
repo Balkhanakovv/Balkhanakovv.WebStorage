@@ -19,6 +19,6 @@ namespace Balkhanakovv.WebStorage.Models.DB
         [Required]
         public int Size { get; set; }
 
-        public List<User> Users { get; set; }
+        public List<User>? Users { get; set; }
     }
 }

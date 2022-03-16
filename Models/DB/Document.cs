@@ -17,20 +17,20 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// Имя документа
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// Идентификатор пользователя (владельца документа)
         /// </summary>
         [Required]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         /// <summary>
         /// Идентификатор типа документа
         /// </summary>
         [Required]
         public int TypeId { get; set; }
-        public DocumentType Type { get; set; }
+        public DocumentType Type { get; set; } = null!;
     }
 }

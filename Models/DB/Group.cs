@@ -17,8 +17,8 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// Имя группы пользователей
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public List<User> Users { get; set; }
+        public List<User>? Users { get; set; }
     }
 }
