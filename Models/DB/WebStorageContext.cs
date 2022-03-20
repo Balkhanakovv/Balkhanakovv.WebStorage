@@ -60,7 +60,8 @@ namespace Balkhanakovv.WebStorage.Models.DB
             );
 
             builder.Entity<User>().HasData(
-                new User { Id = 1, Name = "admin", FullName = "Администратор системы", GroupId = 1, Password = "admin", RateId = 3 }
+                new User { Id = 1, Name = "admin", FullName = "Администратор системы", GroupId = 1, Password = "admin", RateId = 3 },
+                new User { Id = 2, Name = "user", FullName = "Пользователь системы", GroupId = 2, Password = "123456", RateId = 3 }
             );
         }
     }

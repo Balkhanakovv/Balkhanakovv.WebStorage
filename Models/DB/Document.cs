@@ -32,5 +32,11 @@ namespace Balkhanakovv.WebStorage.Models.DB
         [Required]
         public int TypeId { get; set; }
         public DocumentType Type { get; set; } = null!;
+
+        /// <summary>
+        /// Размер документа
+        /// </summary>
+        [Required]
+        public int Size { get; set; }
     }
 }

@@ -1,26 +1,30 @@
 ﻿using Balkhanakovv.WebStorage.Models.DB;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using System.Diagnostics;
 
 namespace Balkhanakovv.WebStorage.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly WebStorageContext _db;
 
-        private readonly WebStorageContext _context;
-
-        public HomeController(ILogger<HomeController> logger, WebStorageContext context)
+        public HomeController(WebStorageContext db)
         {
-            _logger = logger;
-            _context = context;
+            _db = db;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            return View();
+            var user = _db.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
+            if (user == null)
+            {
+                return null;
+            }
+
+            var files = _db.Documents.Where(x => x.UserId == user.Id).ToList();
+            return View(files);
         }
 
         public IActionResult Privacy()
