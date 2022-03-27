@@ -1,5 +1,9 @@
 ﻿<div class="mb-3">
-  <label for="formFileMultiple" class="form-label">Multiple files input example</label>
-  <input class="form-control" type="file" id="formFileMultiple" multiple>
+    <form asp-action="UploadFiles" asp-controller="Storage" method="post" enctype="multipart/form-data">
+        <label for="formFileMultiple" class="form-label">Multiple files input example</label>
+        <input class="form-control" type="file" id="formFileMultiple" multiple name="uploads">
+
+        <input type="submit" value="Загрузить" class="btn btn-outline-dark" />
+    </form>
 </div>
 

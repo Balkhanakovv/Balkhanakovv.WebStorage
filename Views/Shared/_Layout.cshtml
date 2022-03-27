@@ -28,6 +28,13 @@
                         <li>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a>
                         </li>
+                        @if (User.Identity.Name == "admin")
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminPage">Администрирование</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>

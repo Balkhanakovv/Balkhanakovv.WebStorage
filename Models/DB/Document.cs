@@ -37,6 +37,12 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// Размер документа
         /// </summary>
         [Required]
-        public int Size { get; set; }
+        public double Size { get; set; }
+
+        /// <summary>
+        /// Путь к документу
+        /// </summary>
+        [Required]
+        public string Path { get; set; } = null!;
     }
 }
