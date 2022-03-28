@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Balkhanakovv.WebStorage.Services.StorageService;
+using Balkhanakovv.WebStorage.Services.StoragePathService;
 
 namespace Balkhanakovv.WebStorage.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly StorageService _storageService;
+        private readonly IStorageService _storageService;
 
-        public AdminController(StorageService storageService)
+        public AdminController(IStorageService storageService)
         {
             _storageService = storageService;
         }

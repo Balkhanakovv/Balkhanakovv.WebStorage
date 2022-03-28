@@ -1,4 +1,4 @@
-﻿namespace Balkhanakovv.WebStorage.Services.StorageService
+﻿namespace Balkhanakovv.WebStorage.Services.StoragePathService
 {
     public class StorageService : IStorageService
     {

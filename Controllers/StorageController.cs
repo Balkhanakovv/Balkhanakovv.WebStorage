@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Balkhanakovv.WebStorage.Models.DB;
-using Balkhanakovv.WebStorage.Services.StorageService;
+using Balkhanakovv.WebStorage.Services.StoragePathService;
 
 namespace Balkhanakovv.WebStorage.Controllers
 {
     public class StorageController : Controller
     {
-        private readonly IWebHostEnvironment _appEnvironment;
-
         private readonly IStorageService _storageService;
 
         private readonly WebStorageContext _db;
 
-        public StorageController(IWebHostEnvironment appEnvironment, IStorageService storageService, WebStorageContext db)
+        public StorageController(IStorageService storageService, WebStorageContext db)
         {
-            _appEnvironment = appEnvironment;
             _storageService = storageService;
             _db = db;
         }
@@ -27,17 +24,23 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public async void UploadFiles(IFormFileCollection uploads)
+        public void UploadFiles(IFormFileCollection uploads)
         {
             User? user = _db.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
             if (user != null)
             {
+                string path = _storageService.StoragePathString + '/' + user.Name;
+                if(!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 foreach (var uploadedFile in uploads)
                 {
-                    string path = _storageService.StoragePathString + '/' + uploadedFile.FileName;
+                    path += '/' + uploadedFile.FileName;
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
-                        await uploadedFile.CopyToAsync(fileStream);
+                        uploadedFile.CopyTo(fileStream);
                     }
 
                     Document document = new Document() {

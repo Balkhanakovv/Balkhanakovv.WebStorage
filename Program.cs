@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Balkhanakovv.WebStorage.Models.DB;
-using Balkhanakovv.WebStorage.Services.StorageService;
+using Balkhanakovv.WebStorage.Services.StoragePathService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddSingleton<IStorageService, StorageService>();
 builder.Services.AddDbContext<WebStorageContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => options.LoginPath = "/Auth/Login");
 builder.Services.AddAuthorization();
-builder.Services.AddTransient<IStorageService, StorageService>();
 
 var app = builder.Build();
 
