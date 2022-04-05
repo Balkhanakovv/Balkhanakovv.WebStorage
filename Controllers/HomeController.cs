@@ -23,7 +23,7 @@ namespace Balkhanakovv.WebStorage.Controllers
                 return null;
             }
 
-            var files = _db.Documents.Where(x => x.UserId == user.Id).ToList();
+            var files = _db.Documents.Where(x => x.UserId == user.Id || x.IsShared == true).ToList();
             return View(files);
         }
 

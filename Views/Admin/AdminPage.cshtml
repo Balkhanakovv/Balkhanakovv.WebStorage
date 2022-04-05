@@ -1,17 +1,70 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Balkhanakovv.WebStorage.ViewModels.RegisterModel 
+@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+
 <h1>Панель администрирования</h1>
-<form asp-action="SetDocumentPath" asp-controller="Admin">
+<br />
+<h3>Каталог сохранения файлов</h3>
+<form asp-controller='Admin' asp-action='SetDocumentPath' method='post'>
+    <div class="form-floating">
+        <input id="FilePath" type="text" class="form-control" placeholder="Путь" name="path" />
+        <label>Введите путь</label>
+    </div>
+
+    <div class="form-group">
+        <input id="UpdatePathButton" type="submit" value="Обновить" class="btn btn-outline-dark" />
+    </div>
+</form>
+
+<br />
+<h3>Регистрация нового пользователя</h3>
+<form asp-action="Register" asp-controller="Auth" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div>
-        <div class="form-floating">
-            <input type="text"  class="form-control" placeholder="Путь" name="path"/>
-            <label>Введите путь</label>
+        <div>
+            <label asp-for="Name">Введите имя пользователя</label><br />
+            <input type="text" asp-for="Name" />
+            <span asp-validation-for="Name" />
         </div>
-        <div class="form-group">
-            <input type="submit" value="Войти" class="btn btn-outline-dark" />
+        <div>
+            <label asp-for="Password">Введите пароль</label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password" />
+        </div>
+        <div>
+            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword" />
+        </div>
+        <div>
+            <label asp-for="FullName">Введите полное имя пользователя</label><br />
+            <input type="text" asp-for="FullName" />
+            <span asp-validation-for="FullName" />
+        </div>
+
+        <div>
+            <label asp-for="GroupId">Выберите группу пользователя</label><br />
+            <select asp-for="GroupId">
+                @foreach(var item in _db.Groups)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }  
+            </select>
+            <span asp-validation-for="GroupId" />
+        </div>
+
+        <div>
+            <label asp-for="RateId">Выберите лимит для пользователя</label><br />
+            <select asp-for="RateId">
+                @foreach(var item in _db.Rates)
+                {
+                    <option value="@item.Id">@item.Size</option>
+                }  
+            </select>
+            <span asp-validation-for="RateId" />
+        </div>
+
+        <div>
+            <input type="submit" value="Регистрация" />
         </div>
     </div>
 </form>

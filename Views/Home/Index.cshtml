@@ -1,62 +1,41 @@
-﻿@using Balkhanakovv.WebStorage.Models.DB;
+﻿@using Balkhanakovv.WebStorage.Models.DB
 @model List<Document>
+
+@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <!--<table>
-        <thead>
-            <tr>
-                <th>Имя</th>
-                <th>Тип</th>
-                <th>Владелец</th>
-                <th>Размер</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Док1</td>
-                <td>Изображение</td>
-                <td>Юзер</td>
-                <td>228</td>
-            </tr>
-            <tr>
-                <td>Док2</td>
-                <td>Файл</td>
-                <td>Админ</td>
-                <td>350</td>
-            </tr>
-        </tbody>
-    </table>-->
+<div class="text-center">    
     @if (Model.Count == 0)
     {
         <h4>У вас пока нет загруженных файлов</h4>
     }
     else
     {
-        <table>
-            <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Тип</th>
-                    <th>Владелец</th>
-                    <th>Размер</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var file in Model)
-                {
+        <div class="table">
+            <table>
+                <thead>
                     <tr>
-                        <td>@file.Name</td>
-                        @*<td>@file.Type.Name</td>
-                            <td>@file.User.Name</td>*@
-                        <td>@file.Size</td>
+                        <th>Имя</th>
+                        <th>Размер</th>
+                        <th>Владелец</th>
+                        <th>Тип</th>
                     </tr>
-                }
-
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var file in Model)
+                    {
+                        <tr>
+                            <td>@file.Name</td>
+                            <td>@file.Size</td>
+                            <td>@_db.Users.Where(u => u.Id == file.UserId)?.FirstOrDefault()?.Name</td>
+                            <td>@_db.Types.Where(t => t.Id == file.TypeId)?.FirstOrDefault()?.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>

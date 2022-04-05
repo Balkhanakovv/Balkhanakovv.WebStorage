@@ -16,9 +16,17 @@ namespace Balkhanakovv.WebStorage.Controllers
         [Authorize]
         public IActionResult AdminPage()
         {
-            return View();
+            if (User.Identity.Name == "admin")
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
+        [HttpPost]
         public void SetDocumentPath(string path)
         {
             if (!String.IsNullOrWhiteSpace(path))

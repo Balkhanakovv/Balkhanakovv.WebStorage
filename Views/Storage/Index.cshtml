@@ -1,7 +1,24 @@
-﻿<div class="mb-3">
+﻿@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+
+<div class="mb-3">
     <form asp-action="UploadFiles" asp-controller="Storage" method="post" enctype="multipart/form-data">
-        <label for="formFileMultiple" class="form-label">Multiple files input example</label>
-        <input class="form-control" type="file" id="formFileMultiple" multiple name="uploads">
+        <div>
+            <label for="formFileMultiple" class="form-label">Multiple files input example</label>
+            <input type="file" id="formFileMultiple" multiple name="uploads">
+        </div>
+        <div>
+            <label for="isSharedCheckbox" class="form-label">Предоставить к файлу общий доступ?</label>
+            <input type="checkbox" id="isSharedCheckbox" name="isShared" value="true" />
+        </div>
+        <div>
+            <label for="docType" class="form-label">Тип документа:</label>
+            <select id="docType" name="documentType">
+                @foreach (var item in _db.Types)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
 
         <input type="submit" value="Загрузить" class="btn btn-outline-dark" />
     </form>

@@ -4,7 +4,7 @@ namespace Balkhanakovv.WebStorage.ViewModels
 {
     public class LoginModel
     {
-        [Required(ErrorMessage = "Не указан Email")]
+        [Required(ErrorMessage = "Не указано имя пользователя")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Не указан пароль")]

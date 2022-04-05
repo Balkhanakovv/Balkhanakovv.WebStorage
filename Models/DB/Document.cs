@@ -44,5 +44,10 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// </summary>
         [Required]
         public string Path { get; set; } = null!;
+
+        /// <summary>
+        /// Путь к документу
+        /// </summary>
+        public bool IsShared { get; set; } = false;
     }
 }

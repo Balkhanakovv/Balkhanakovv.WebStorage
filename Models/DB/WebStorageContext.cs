@@ -48,9 +48,9 @@ namespace Balkhanakovv.WebStorage.Models.DB
             );
 
             builder.Entity<DocumentType>().HasData(
-                new DocumentType { Id = 1, Name = "Text document" },
-                new DocumentType { Id = 2, Name = "Image" },
-                new DocumentType { Id = 3, Name = "Binary" }
+                new DocumentType { Id = 1, Name = "Текст" },
+                new DocumentType { Id = 2, Name = "Изображение" },
+                new DocumentType { Id = 3, Name = "Бинарный" }
             );
 
             builder.Entity<MemoryRate>().HasData(

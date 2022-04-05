@@ -24,7 +24,7 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public void UploadFiles(IFormFileCollection uploads)
+        public void UploadFiles(IFormFileCollection uploads, bool isShared, int documentType)
         {
             User? user = _db.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
             if (user != null)
@@ -48,7 +48,8 @@ namespace Balkhanakovv.WebStorage.Controllers
                         Name = uploadedFile.FileName,
                         Size = uploadedFile.Length / 1024 / 1024,
                         Path = path,
-                        TypeId = 1
+                        TypeId = documentType,
+                        IsShared = isShared
                     };
 
                     _db.Documents.Add(document);

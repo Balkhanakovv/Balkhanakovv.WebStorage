@@ -54,7 +54,7 @@ namespace Balkhanakovv.WebStorage.Controllers
             };
 
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
@@ -62,6 +62,32 @@ namespace Balkhanakovv.WebStorage.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Auth");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _db.Users.FirstOrDefaultAsync(u => u.Name == model.Name);
+                if (user == null)
+                {
+                    _db.Users.Add(new User { 
+                        Name = model.Name, 
+                        Password = model.Password, 
+                        FullName = model.FullName, 
+                        GroupId = model.GroupId, 
+                        RateId = model.RateId 
+                    });
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction("AdminPage", "Admin");
+                }
+                else
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            return RedirectToAction("AdminPage", "Admin");
         }
     }
 }
