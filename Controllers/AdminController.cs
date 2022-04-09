@@ -27,12 +27,14 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public void SetDocumentPath(string path)
+        public IActionResult SetDocumentPath(string path)
         {
             if (!String.IsNullOrWhiteSpace(path))
             {
                 _storageService.StoragePathString = path;
             }
+
+            return RedirectToAction("AdminPage", "Admin");
         }
     }
 }
