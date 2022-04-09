@@ -1,70 +1,169 @@
-﻿@model Balkhanakovv.WebStorage.ViewModels.RegisterModel 
+﻿@model Balkhanakovv.WebStorage.ViewModels.RegisterModel
 @inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
 
 <h1>Панель администрирования</h1>
-<br />
-<h3>Каталог сохранения файлов</h3>
-<form asp-controller='Admin' asp-action='SetDocumentPath' method='post'>
-    <div class="form-floating">
-        <input id="FilePath" type="text" class="form-control" placeholder="Путь" name="path" />
-        <label>Введите путь</label>
+
+<div class="container row">
+    <div class="col-lg-3">
+        <div class="card">
+            <img src="~/img/documents.png" class="card-img-top" style="width: 128px; padding: 10px; margin: 0 auto;" />
+            <div class="card-body">
+                <h5 class="card-title">Каталог сохранения</h5>
+                <h6 class="card-subtitle">Ввод нового пути</h6>
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Filepath_Modal">
+                    Путь
+                </button>
+
+                <div class="modal fade" id="Filepath_Modal" tabindex="-1" aria-labelledby="Filepath_ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Filepath_ModalLabel">Путь</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-controller='Admin' asp-action='SetDocumentPath' method='post'>
+                                    <div class="form-floating">
+                                        <input id="FilePath" type="text" class="form-control" placeholder="Путь" name="path" />
+                                        <label>Введите путь</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input id="UpdatePathButton" type="submit" value="Обновить" class="btn btn-outline-dark" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <input id="UpdatePathButton" type="submit" value="Обновить" class="btn btn-outline-dark" />
+    <div class="col-lg-3">
+        <div class="card">
+            <img src="~/img/registered.png" class="card-img-top" style="width: 128px; padding: 10px; margin: 0 auto;" />
+            <div class="card-body">
+                <h5 class="card-title">Регистрация</h5>
+                <h6 class="card-subtitle">Добавление нового пользователя</h6>
+
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Register_Modal">
+                    Регистрация
+                </button>
+
+                <div class="modal fade" id="Register_Modal" tabindex="-1" aria-labelledby="Register_ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Register_ModalLabel">Регистрация</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="Register" asp-controller="Auth" asp-anti-forgery="true">
+                                    <div class="validation" asp-validation-summary="ModelOnly"></div>
+                                    <div>
+                                        <div>
+                                            <label asp-for="Name">Введите имя пользователя</label><br />
+                                            <input type="text" asp-for="Name" />
+                                            <span asp-validation-for="Name" />
+                                        </div>
+                                        <div>
+                                            <label asp-for="Password">Введите пароль</label><br />
+                                            <input asp-for="Password" />
+                                            <span asp-validation-for="Password" />
+                                        </div>
+                                        <div>
+                                            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
+                                            <input asp-for="ConfirmPassword" />
+                                            <span asp-validation-for="ConfirmPassword" />
+                                        </div>
+                                        <div>
+                                            <label asp-for="FullName">Введите полное имя пользователя</label><br />
+                                            <input type="text" asp-for="FullName" />
+                                            <span asp-validation-for="FullName" />
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="GroupId">Выберите группу пользователя</label><br />
+                                            <select asp-for="GroupId">
+                                                @foreach (var item in _db.Groups)
+                                                {
+                                                    <option value="@item.Id">@item.Name</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="GroupId" />
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="RateId">Выберите лимит для пользователя</label><br />
+                                            <select asp-for="RateId">
+                                                @foreach (var item in _db.Rates)
+                                                {
+                                                    <option value="@item.Id">@item.Size</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="RateId" />
+                                        </div>
+
+                                        <div>
+                                            <input type="submit" value="Регистрация" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</form>
 
-<br />
-<h3>Регистрация нового пользователя</h3>
-<form asp-action="Register" asp-controller="Auth" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div>
-            <label asp-for="Name">Введите имя пользователя</label><br />
-            <input type="text" asp-for="Name" />
-            <span asp-validation-for="Name" />
-        </div>
-        <div>
-            <label asp-for="Password">Введите пароль</label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div>
-            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
-            <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword" />
-        </div>
-        <div>
-            <label asp-for="FullName">Введите полное имя пользователя</label><br />
-            <input type="text" asp-for="FullName" />
-            <span asp-validation-for="FullName" />
-        </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <img src="~/img/user.png" class="card-img-top" style="width: 128px; padding: 10px; margin: 0 auto;" />
+            <div class="card-body">
+                <h5 class="card-title">Пользователи</h5>
+                <h6 class="card-subtitle">Список пользователей</h6>
 
-        <div>
-            <label asp-for="GroupId">Выберите группу пользователя</label><br />
-            <select asp-for="GroupId">
-                @foreach(var item in _db.Groups)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }  
-            </select>
-            <span asp-validation-for="GroupId" />
-        </div>
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Users_Modal">
+                    Пользователи
+                </button>
 
-        <div>
-            <label asp-for="RateId">Выберите лимит для пользователя</label><br />
-            <select asp-for="RateId">
-                @foreach(var item in _db.Rates)
-                {
-                    <option value="@item.Id">@item.Size</option>
-                }  
-            </select>
-            <span asp-validation-for="RateId" />
-        </div>
-
-        <div>
-            <input type="submit" value="Регистрация" />
+                <div class="modal fade" id="Users_Modal" tabindex="-1" aria-labelledby="Users_ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Users_ModalLabel">Пользователи</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Имя пользователя</th>
+                                            <th>Группа</th>
+                                            <th>Потраченная память</th>
+                                            <th>Лимит</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in _db.Users)
+                                        {
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@_db.Groups.Where(x => x.Id == item.GroupId).FirstOrDefault()?.Name</td>
+                                                <td>@item.MemorySize</td>
+                                                <td>@_db.Rates.Where(x => x.Id == item.RateId).FirstOrDefault()?.Size</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</form>
+</div>
+

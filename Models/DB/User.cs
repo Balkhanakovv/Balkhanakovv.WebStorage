@@ -43,6 +43,11 @@ namespace Balkhanakovv.WebStorage.Models.DB
         public int RateId { get; set; }
         public MemoryRate? Rate { get; set; }
 
+        /// <summary>
+        /// Общий объем памяти
+        /// </summary>
+        public int MemorySize { get; set; }
+
         public List<Document>? Documents { get; set; }
     }
 }
