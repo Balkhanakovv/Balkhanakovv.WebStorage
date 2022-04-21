@@ -46,7 +46,7 @@ namespace Balkhanakovv.WebStorage.Controllers
                     Document document = new Document() {
                         UserId = user.Id,
                         Name = uploadedFile.FileName,
-                        Size = uploadedFile.Length / 1024 / 1024,
+                        Size = (double)uploadedFile.Length / 1024.0 / 1024.0,
                         Path = path,
                         TypeId = documentType,
                         IsShared = isShared
