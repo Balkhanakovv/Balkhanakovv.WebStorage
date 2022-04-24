@@ -9,6 +9,7 @@ namespace Balkhanakovv.WebStorage.Models.DB
         public DbSet<DocumentType> Types { get; set; } = null!;
         public DbSet<Document> Documents { get; set; } = null!;
         public DbSet<MemoryRate> Rates { get; set; } = null!;
+        public DbSet<ForgottenPassword> ForgottenPasswords { get; set; } = null!;
 
         public WebStorageContext(DbContextOptions<WebStorageContext> options) : base(options)
         {

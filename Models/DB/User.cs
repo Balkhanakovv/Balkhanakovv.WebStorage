@@ -46,7 +46,7 @@ namespace Balkhanakovv.WebStorage.Models.DB
         /// <summary>
         /// Общий объем памяти
         /// </summary>
-        public int MemorySize { get; set; }
+        public double MemorySize { get; set; }
 
         public List<Document>? Documents { get; set; }
     }

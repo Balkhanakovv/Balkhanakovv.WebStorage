@@ -24,7 +24,6 @@
                             <div class="modal-body" id="passwd_res">
                                 @{
                                     await Html.RenderPartialAsync("PartialChangePassword");
-                                    //await Component.InvokeAsync("ChangePassword");
                                 }
                             </div>
                         </div>
@@ -92,30 +91,30 @@
                                 <form asp-action="Register" asp-controller="Auth" asp-anti-forgery="true">
                                     <div class="validation" asp-validation-summary="ModelOnly"></div>
                                     <div>
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="Name">Введите имя пользователя</label><br />
-                                            <input type="text" asp-for="Name" />
+                                            <input type="text" asp-for="Name" class="form-control"/>
                                             <span asp-validation-for="Name" />
                                         </div>
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="Password">Введите пароль</label><br />
-                                            <input asp-for="Password" />
+                                            <input asp-for="Password"  class="form-control"/>
                                             <span asp-validation-for="Password" />
                                         </div>
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="ConfirmPassword">Повторите пароль</label><br />
-                                            <input asp-for="ConfirmPassword" />
+                                            <input asp-for="ConfirmPassword"  class="form-control"/>
                                             <span asp-validation-for="ConfirmPassword" />
                                         </div>
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="FullName">Введите полное имя пользователя</label><br />
-                                            <input type="text" asp-for="FullName" />
+                                            <input type="text" asp-for="FullName"  class="form-control"/>
                                             <span asp-validation-for="FullName" />
                                         </div>
 
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="GroupId">Выберите группу пользователя</label><br />
-                                            <select asp-for="GroupId">
+                                            <select asp-for="GroupId"  class="form-select">
                                                 @foreach (var item in _db.Groups)
                                                 {
                                                     <option value="@item.Id">@item.Name</option>
@@ -124,9 +123,9 @@
                                             <span asp-validation-for="GroupId" />
                                         </div>
 
-                                        <div>
+                                        <div class="form-floating">
                                             <label asp-for="RateId">Выберите лимит для пользователя</label><br />
-                                            <select asp-for="RateId">
+                                            <select asp-for="RateId"  class="form-select">
                                                 @foreach (var item in _db.Rates)
                                                 {
                                                     <option value="@item.Id">@item.Size</option>

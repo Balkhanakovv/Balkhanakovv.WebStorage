@@ -23,6 +23,13 @@ namespace Balkhanakovv.WebStorage.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpPost]
+        public PhysicalFileResult DownloadFile(string path)
+        {
+            return PhysicalFile(path, "image/png");
+        }
+
         [HttpPost]
         public void UploadFiles(IFormFileCollection uploads, bool isShared, int documentType)
         {
@@ -37,13 +44,8 @@ namespace Balkhanakovv.WebStorage.Controllers
 
                 foreach (var uploadedFile in uploads)
                 {
-                    path += '/' + uploadedFile.FileName;
-                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    Document document = new Document()
                     {
-                        uploadedFile.CopyTo(fileStream);
-                    }
-
-                    Document document = new Document() {
                         UserId = user.Id,
                         Name = uploadedFile.FileName,
                         Size = (double)uploadedFile.Length / 1024.0 / 1024.0,
@@ -51,6 +53,19 @@ namespace Balkhanakovv.WebStorage.Controllers
                         TypeId = documentType,
                         IsShared = isShared
                     };
+
+                    if ( user.MemorySize + document.Size > _db.Rates.Where(xx => xx.Id == user.RateId).FirstOrDefault()?.Size)
+                    {
+                        break;
+                    }
+
+                    user.MemorySize += document.Size;
+
+                    path += '/' + uploadedFile.FileName;
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        uploadedFile.CopyTo(fileStream);
+                    }
 
                     _db.Documents.Add(document);
                     _db.SaveChanges();

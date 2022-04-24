@@ -28,6 +28,11 @@ namespace Balkhanakovv.WebStorage.Controllers
             return View();
         }
 
+        public IActionResult RecoveryPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
@@ -42,6 +47,25 @@ namespace Balkhanakovv.WebStorage.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RecoveryPassword(RecoveryPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _db.Users.FirstOrDefaultAsync(u => u.Name == model.Name);
+                if (user != null)
+                {
+                    ForgottenPassword newPasswd = new ForgottenPassword { UserId = user.Id, IsRestored = false };
+                    _db.ForgottenPasswords.Add(newPasswd);
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction("Login", "Auth");
+                }
+                ModelState.AddModelError("", "Введите имя пользователя");
             }
             return View(model);
         }
