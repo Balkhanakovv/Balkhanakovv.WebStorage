@@ -25,15 +25,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Storage" asp-action="Index">Загрузить</a>
                         </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a>
-                        </li>
                         @if (User.Identity.Name == "admin")
                         {
                             <li>
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminPage">Администрирование</a>
                             </li>
                         }
+                        else
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SettingsPage">Настройки</a>
+                            </li>
+                        }
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a>
+                        </li>
 
                     </ul>
                 </div>

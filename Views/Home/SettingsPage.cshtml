@@ -1,0 +1,34 @@
+﻿@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+
+<h2>Настройки</h2>
+
+<div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center">
+    <div class="col">
+        <div class="card text-center">
+            <img src="~/img/newPassword.png" class="card-img-top" style="width: 128px; padding: 10px; margin: 0 auto;" />
+            <div class="card-body">
+                <h5 class="card-title">Пароль</h5>
+                <h6 class="card-subtitle">Изменить пароль</h6>
+                <button class="btn btn-secondary" style="margin: 10px 0 0 0;" data-bs-toggle="modal" data-bs-target="#NewPassword_Modal">
+                    Путь
+                </button>
+
+                <div class="modal fade" id="NewPassword_Modal" tabindex="-1" aria-labelledby="NewPassword_ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="NewPassword_ModalLabel">Смена пароля</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="passwd_res">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/Admin/PartialChangePassword.cshtml");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

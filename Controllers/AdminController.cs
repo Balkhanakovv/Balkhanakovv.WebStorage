@@ -43,14 +43,14 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public void PartialChangePassword(ChangePasswordModel model)
+        public IActionResult PartialChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)
             {
                 if (String.IsNullOrEmpty(User?.Identity?.Name))
                 {
-                    //return RedirectToAction("AdminPage", "Admin");
-                    return;
+                    return RedirectToAction("AdminPage", "Admin");
+                    //return;
                 }
 
                 var user = _db.Users.Where(x => x.Name == User.Identity.Name).FirstOrDefault();
@@ -70,12 +70,13 @@ namespace Balkhanakovv.WebStorage.Controllers
                     user.Password = model.NewPassword;
 
                     _db.SaveChanges();
-                    //return RedirectToAction("AdminPage", "Admin");
-                    return;
+                    ModelState.AddModelError("", "Пароль успешно изменен");
+                    return PartialView("PartialChangePassword", model);
+                    //return;
                 }
             }
-            //return PartialView("PartialChangePassword", model);
-            return;
+            return PartialView("PartialChangePassword", model);
+            //return;
         }
     }
 }

@@ -23,11 +23,16 @@ namespace Balkhanakovv.WebStorage.Controllers
             return View();
         }
 
-        [Authorize]
-        [HttpPost]
-        public PhysicalFileResult DownloadFile(string path)
+        public int[] DownloadFile(string path)
         {
-            return PhysicalFile(path, "image/png");
+            var byteArray = System.IO.File.ReadAllBytes(path);
+            string file_type = "application/octet-stream";
+            var index = path.LastIndexOf('/');
+            var file_name = path.Substring(index+1);
+            //string file_name = "PDFIcon.pdf";
+            //return PhysicalFile(path, file_type, file_name);
+            return byteArray.Select(x => (int)x).ToArray();
+           //return byteArray;
         }
 
         [HttpPost]

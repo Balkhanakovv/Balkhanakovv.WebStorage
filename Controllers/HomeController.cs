@@ -31,5 +31,18 @@ namespace Balkhanakovv.WebStorage.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public IActionResult SettingsPage()
+        {
+            if (User?.Identity?.Name != "admin")
+            {
+                return View();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
