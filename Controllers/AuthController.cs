@@ -106,12 +106,13 @@ namespace Balkhanakovv.WebStorage.Controllers
                     });
                     await _db.SaveChangesAsync();
 
-                    return RedirectToAction("AdminPage", "Admin");
+                    ModelState.AddModelError("", "Успешная регистрация");
+                    return PartialView("~/Views/Admin/PartialCreateUser.cshtml");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return RedirectToAction("AdminPage", "Admin");
+            return PartialView("~/Views/Admin/PartialCreateUser.cshtml");
         }
     }
 }

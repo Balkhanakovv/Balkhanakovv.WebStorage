@@ -26,13 +26,7 @@ namespace Balkhanakovv.WebStorage.Controllers
         public int[] DownloadFile(string path)
         {
             var byteArray = System.IO.File.ReadAllBytes(path);
-            string file_type = "application/octet-stream";
-            var index = path.LastIndexOf('/');
-            var file_name = path.Substring(index+1);
-            //string file_name = "PDFIcon.pdf";
-            //return PhysicalFile(path, file_type, file_name);
             return byteArray.Select(x => (int)x).ToArray();
-           //return byteArray;
         }
 
         [HttpPost]
@@ -49,6 +43,8 @@ namespace Balkhanakovv.WebStorage.Controllers
 
                 foreach (var uploadedFile in uploads)
                 {
+                    path = _storageService.StoragePathString + '/' + user.Name;
+
                     Document document = new Document()
                     {
                         UserId = user.Id,
@@ -76,6 +72,14 @@ namespace Balkhanakovv.WebStorage.Controllers
                     _db.SaveChanges();
                 }
             }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFile(int fileId)
+        {
+            _db.Documents.Remove(_db.Documents.Where(x => x.Id == fileId)?.FirstOrDefault());
+            _db.SaveChanges();
+            return PartialView("~/Views/Home/PartialFileTable.cshtml", _db.Documents.ToList());
         }
     }
 }

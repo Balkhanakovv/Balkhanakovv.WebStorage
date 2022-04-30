@@ -1,0 +1,70 @@
+﻿@using Balkhanakovv.WebStorage.Models.DB
+@model List<Document>
+
+@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+@inject Balkhanakovv.WebStorage.Services.StoragePathService.IStorageService _path
+
+@if (Model.Count == 0)
+{
+    <h4>У вас пока нет загруженных файлов</h4>
+}
+else
+{
+    <div class="container-fluid" id="partialFileTable">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Размер</th>
+                    <th scope="col">Владелец</th>
+                    <th scope="col">Тип</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var file in Model)
+                {
+                    <tr scope="row">
+                        <td>@file.Name</td>
+                        <td>@Math.Round((double)file.Size, 2)</td>
+                        <td>@_db.Users.Where(u => u.Id == file.UserId)?.FirstOrDefault()?.Name</td>
+                        <td>@_db.Types.Where(t => t.Id == file.TypeId)?.FirstOrDefault()?.Name</td>
+                        <td>
+                            <button asp-controller="Storage" asp-action="DownloadFile" type="button" class="btn" onclick="$.ajax({
+                                url: '@Url.Action("DownloadFile", "Storage")',
+                                method: 'post',
+                                data: {path: '@(_path.StoragePathString)/@(_db.Users.Where(u => u.Id == file.UserId)?.FirstOrDefault()?.Name)/@(file.Name)'},
+                                success: function (e) {
+                                    var bytes = new Uint8Array(e);
+                                    var blob = new Blob([bytes], {type: 'application/octet-stream'});
+                                    var link=document.createElement('a');
+                                    link.href=window.URL.createObjectURL(blob);
+                                    link.download='@(file.Name)';
+                                    link.click();
+                                }})">
+                                Скачать
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn" onclick="
+                                    $.ajax({
+                                        url: '@Url.Action("DeleteFile", "Storage")',
+                                        method: 'post',
+                                        data: {fileId: @file.Id},
+                                        cache: false,
+                                        success: function (e) {
+                                            console.log(e);
+                                            $('#partialFileTable').html(e);
+                                        }
+                                    });
+                                ">
+                                Удалить
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

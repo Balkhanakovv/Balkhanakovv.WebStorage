@@ -50,7 +50,6 @@ namespace Balkhanakovv.WebStorage.Controllers
                 if (String.IsNullOrEmpty(User?.Identity?.Name))
                 {
                     return RedirectToAction("AdminPage", "Admin");
-                    //return;
                 }
 
                 var user = _db.Users.Where(x => x.Name == User.Identity.Name).FirstOrDefault();
@@ -72,11 +71,15 @@ namespace Balkhanakovv.WebStorage.Controllers
                     _db.SaveChanges();
                     ModelState.AddModelError("", "Пароль успешно изменен");
                     return PartialView("PartialChangePassword", model);
-                    //return;
                 }
             }
             return PartialView("PartialChangePassword", model);
-            //return;
+        }
+
+        [HttpPost]
+        public void RestorePassword(int userId)
+        {
+
         }
     }
 }
