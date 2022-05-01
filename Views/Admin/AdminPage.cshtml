@@ -1,4 +1,5 @@
-﻿@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+﻿@using Balkhanakovv.WebStorage.ViewModels
+@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
 
 <h1>Панель администрирования</h1>
 
@@ -164,7 +165,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" id="passwd_res">
-                                
+                                @{
+                                    await Html.RenderPartialAsync("PartialRecoverPassword");
+                                }
                             </div>
                         </div>
                     </div>
@@ -172,5 +175,36 @@
             </div>
         </div>
     </div>
+
+    <div class="col">
+        <div class="card text-center">
+            <img src="~/img/registered.png" class="card-img-top" style="width: 128px; padding: 10px; margin: 0 auto;" />
+            <div class="card-body">
+                <h5 class="card-title">Лимит</h5>
+                <h6 class="card-subtitle">Изменение лимитп</h6>
+
+                <button class="btn btn-secondary" style="margin: 10px 0 0 0;" data-bs-toggle="modal" data-bs-target="#ChangeLimit_Modal">
+                    Изменить
+                </button>
+
+                <div class="modal fade" id="ChangeLimit_Modal" tabindex="-1" aria-labelledby="ChangeLimit_ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ChangeLimit_ModalLabel">Изменение</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @{
+                                    await Html.RenderPartialAsync("PartialChangeLimit");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 

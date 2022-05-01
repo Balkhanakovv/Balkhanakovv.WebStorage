@@ -77,9 +77,42 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public void RestorePassword(int userId)
+        [Authorize]
+        public IActionResult RestorePassword(int userId)
         {
+            var user = _db.Users.Where(x => x.Id == userId)?.FirstOrDefault();
 
+            if (user != null)
+            {
+                user.Password = "password";
+                _db.SaveChanges();
+            }
+
+            var forgottenPasswordNote = _db.ForgottenPasswords.Where(x => !x.IsRestored && x.UserId == userId).FirstOrDefault();
+            
+            if (forgottenPasswordNote != null)
+            {
+                forgottenPasswordNote.IsRestored = true;
+                _db.SaveChanges();
+            }
+
+            return PartialView("PartialRecoverPassword");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangeLimit(int UserId, int RateId)
+        {
+            var user = _db.Users.Where(x => x.Id == UserId).FirstOrDefault();
+            var rate = _db.Rates.Where(x => x.Id == RateId).FirstOrDefault();
+
+            if (user != null && rate != null)
+            {
+                user.RateId = RateId;
+                _db.SaveChanges();
+            }
+
+            return PartialView("PartialChangeLimit");
         }
     }
 }

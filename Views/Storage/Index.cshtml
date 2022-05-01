@@ -2,6 +2,7 @@
 
 <div class="mb-3">
     <form asp-action="UploadFiles" asp-controller="Storage" method="post" enctype="multipart/form-data">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
             <label for="formFileMultiple" class="form-label">Multiple files input example</label>
             <input type="file" id="formFileMultiple" multiple name="uploads">

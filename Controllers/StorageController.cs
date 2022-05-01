@@ -30,55 +30,69 @@ namespace Balkhanakovv.WebStorage.Controllers
         }
 
         [HttpPost]
-        public void UploadFiles(IFormFileCollection uploads, bool isShared, int documentType)
+        public IActionResult UploadFiles(IFormFileCollection uploads, bool isShared, int documentType)
         {
-            User? user = _db.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                string path = _storageService.StoragePathString + '/' + user.Name;
-                if(!Directory.Exists(path))
+                User? user = _db.Users.FirstOrDefault(x => x.Name == User.Identity.Name);
+                if (user != null)
                 {
-                    Directory.CreateDirectory(path);
-                }
-
-                foreach (var uploadedFile in uploads)
-                {
-                    path = _storageService.StoragePathString + '/' + user.Name;
-
-                    Document document = new Document()
+                    string path = _storageService.StoragePathString + '/' + user.Name;
+                    if (!Directory.Exists(path))
                     {
-                        UserId = user.Id,
-                        Name = uploadedFile.FileName,
-                        Size = (double)uploadedFile.Length / 1024.0 / 1024.0,
-                        Path = path,
-                        TypeId = documentType,
-                        IsShared = isShared
-                    };
-
-                    if ( user.MemorySize + document.Size > _db.Rates.Where(xx => xx.Id == user.RateId).FirstOrDefault()?.Size)
-                    {
-                        break;
+                        Directory.CreateDirectory(path);
                     }
 
-                    user.MemorySize += document.Size;
-
-                    path += '/' + uploadedFile.FileName;
-                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    foreach (var uploadedFile in uploads)
                     {
-                        uploadedFile.CopyTo(fileStream);
-                    }
+                        path = _storageService.StoragePathString + '/' + user.Name;
 
-                    _db.Documents.Add(document);
-                    _db.SaveChanges();
+                        Document document = new Document()
+                        {
+                            UserId = user.Id,
+                            Name = uploadedFile.FileName,
+                            Size = (double)uploadedFile.Length / 1024.0 / 1024.0,
+                            Path = path,
+                            TypeId = documentType,
+                            IsShared = isShared
+                        };
+
+                        if (user.MemorySize + document.Size > _db.Rates.Where(xx => xx.Id == user.RateId).FirstOrDefault()?.Size)
+                        {
+                            ModelState.AddModelError("", "Недостаточно места");
+                            return View("Index");
+                        }
+
+                        user.MemorySize += document.Size;
+
+                        path += '/' + uploadedFile.FileName;
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            uploadedFile.CopyTo(fileStream);
+                        }
+
+                        _db.Documents.Add(document);
+                        _db.SaveChanges();
+                    }
                 }
             }
+            ModelState.AddModelError("", "Все файлы успешно загружены");
+            return View("Index");
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult DeleteFile(int fileId)
         {
-            _db.Documents.Remove(_db.Documents.Where(x => x.Id == fileId)?.FirstOrDefault());
+            var document = _db.Documents.Where(x => x.Id == fileId)?.FirstOrDefault();
+
+            var user = _db.Users.Where(x => x.Id == document.UserId).FirstOrDefault();
+            user.MemorySize -= document.Size;
             _db.SaveChanges();
+            
+            _db.Documents.Remove(document);
+            _db.SaveChanges();            
+
             return PartialView("~/Views/Home/PartialFileTable.cshtml", _db.Documents.ToList());
         }
     }

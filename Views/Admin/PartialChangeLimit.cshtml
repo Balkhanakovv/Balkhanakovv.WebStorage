@@ -1,0 +1,46 @@
+﻿@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
+
+<div id="changeLimitContainer">
+    <form id="changeLimitForm"asp-anti-forgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div>
+            <div class="form-floating">
+                <label >Выберите лимит для пользователя</label><br />
+                <select name="UserId" class="form-select">
+                    @foreach (var item in _db.Users)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+
+
+                <div class="form-floating">
+                    <label >Выберите лимит для пользователя</label><br />
+                    <select name="RateId" class="form-select">
+                        @foreach (var item in _db.Rates)
+                        {
+                            <option value="@item.Id">@item.Size</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="btn" onclick="
+                    var data = $('#changeLimitForm').serialize();
+
+                    $.ajax({
+                        url: '@Url.Action("ChangeLimit", "Admin")',
+                        method: 'post',
+                        data: data,
+                        cache: false,
+                        success: function (e) {
+                            $('#changeLimitContainer').html(e);
+                        }
+                   });
+               ">
+                        Применить
+                    </button>
+                </div>
+            </div>
+    </form>
+</div>
