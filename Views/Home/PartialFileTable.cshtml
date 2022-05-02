@@ -4,18 +4,24 @@
 @inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
 @inject Balkhanakovv.WebStorage.Services.StoragePathService.IStorageService _path
 
+@{
+    var user = _db.Users.Where(x => x.Name == User.Identity.Name)?.FirstOrDefault();
+    var rate = _db.Rates.Where(x => x.Id == user.RateId).FirstOrDefault();
+}
+
 @if (Model.Count == 0)
 {
     <h4>У вас пока нет загруженных файлов</h4>
 }
 else
 {
+    <h6>Состояние памяти: @(Math.Round(user.MemorySize, 2)) / @(rate.Size)</h6>
     <div class="container-fluid" id="partialFileTable">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">Имя</th>
-                    <th scope="col">Размер</th>
+                    <th scope="col">Размер, Мб</th>
                     <th scope="col">Владелец</th>
                     <th scope="col">Тип</th>
                     <th></th>
@@ -47,7 +53,9 @@ else
                             </button>
                         </td>
                         <td>
-                            <button type="button" class="btn" onclick="
+                            @if (User.Identity.Name == _db.Users.Where(u => u.Id == file.UserId)?.FirstOrDefault()?.Name)
+                            {
+                                <button type="button" class="btn" onclick="
                                     $.ajax({
                                         url: '@Url.Action("DeleteFile", "Storage")',
                                         method: 'post',
@@ -59,8 +67,9 @@ else
                                         }
                                     });
                                 ">
-                                Удалить
-                            </button>
+                                    Удалить
+                                </button>
+                            }
                         </td>
                     </tr>
                 }

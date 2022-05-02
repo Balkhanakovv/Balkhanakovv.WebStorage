@@ -1,0 +1,24 @@
+﻿<div id="RateContainer">
+    <form method='post'>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="form-floating">
+            <input id="inputRate" type="text" class="form-control" name="newRate" />
+            <label>Введите новое ограничние</label>
+        </div>
+
+        <button type="button" class="btn" onclick="
+
+                    $.ajax({
+                        url: '@Url.Action("AddNewRate", "Admin")',
+                        method: 'post',
+                        data: {newRate: $('#inputRate').val()},
+                        cache: false,
+                        success: function (e) {
+                            $('#RateContainer').html(e);
+                        }
+                   });
+               ">
+            Применить
+        </button>
+    </form>
+</div>

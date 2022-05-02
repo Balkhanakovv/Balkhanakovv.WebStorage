@@ -1,11 +1,11 @@
 ﻿@inject Balkhanakovv.WebStorage.Models.DB.WebStorageContext _db
 
 <div id="changeLimitContainer">
-    <form id="changeLimitForm"asp-anti-forgery="true">
+    <form id="changeLimitForm" asp-anti-forgery="true">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
             <div class="form-floating">
-                <label >Выберите лимит для пользователя</label><br />
+                <label>Выберите лимит для пользователя</label><br />
                 <select name="UserId" class="form-select">
                     @foreach (var item in _db.Users)
                     {
@@ -15,7 +15,7 @@
 
 
                 <div class="form-floating">
-                    <label >Выберите лимит для пользователя</label><br />
+                    <label>Выберите лимит для пользователя</label><br />
                     <select name="RateId" class="form-select">
                         @foreach (var item in _db.Rates)
                         {
@@ -42,5 +42,6 @@
                     </button>
                 </div>
             </div>
+        </div>
     </form>
 </div>

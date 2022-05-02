@@ -114,5 +114,27 @@ namespace Balkhanakovv.WebStorage.Controllers
 
             return PartialView("PartialChangeLimit");
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddNewRate(int newRate)
+        {
+            if (ModelState.IsValid)
+            {
+                var rate = _db.Rates.Where(x => x.Size == newRate);
+                if (rate.Any())
+                {
+                    ModelState.AddModelError("", "Такое ограничение уже существует");
+                    return PartialView("PartialCreateRate");
+                }
+
+                var nr = new MemoryRate() { Size = newRate };
+                _db.Rates.Add(nr);
+                _db.SaveChanges();
+            }
+
+            ModelState.AddModelError("", "Новое ограничение добавлено");
+            return PartialView("PartialCreateRate");
+        }
     }
 }
